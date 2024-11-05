@@ -5,7 +5,7 @@ import heapq
 class node:
     def __init__(self, freq, symbol, left=None, right=None):
    	 # frequency of symbol
-   	 self.freq = freq
+   	    self.freq = freq
 
    	 # symbol name (character)
    	 self.symbol = symbol
