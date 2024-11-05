@@ -1,0 +1,73 @@
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.26;
+
+// Bank contract that manages user accounts and balances
+contract Bank {
+    // Structure representing a user
+    struct User {
+        int AccountNo;        // User's account number
+        string Name;          // User's name
+        string PhoneNumber;   // User's phone number
+        uint balance;         // User's account balance
+    }
+    
+    // Array to store all users
+    User[] users;
+
+    // Function to add a new user to the bank
+    function addUser(int AccountNo, string memory Name, string memory PhoneNumber, uint balance) public {
+        User memory newUser = User(AccountNo, Name, PhoneNumber, balance); // Create a new user
+        users.push(newUser); // Add the new user to the users array
+    }
+
+    // Function to retrieve user information based on account number
+    function getUser(int AccountNo) public view returns (string memory, string memory, uint) {
+        // Iterate through the users array
+        for (uint i = 0; i < users.length; i++) {
+            // Check if the account number matches
+            if (users[i].AccountNo == AccountNo) {
+                // Return the user's details
+                return (users[i].Name, users[i].PhoneNumber, users[i].balance);
+            }
+        }
+        // Return "Not Found" if the user does not exist
+        return ("Not Found", "Not Found", 0);
+    }
+
+    // Function to deposit an amount into a user's account
+    function deposit(uint AccountNo, uint amount) public {
+        // Iterate through the users array
+        for (uint i = 0; i < users.length; i++) {
+            // Check if the account number matches
+            if (users[i].AccountNo == int(AccountNo)) {
+                users[i].balance += amount; // Add the amount to the user's balance
+                break; // Exit the loop once the user is found
+            }
+        }
+    }
+
+    // Function to withdraw an amount from a user's account
+    function withdraw(uint AccountNo, uint amount) public {
+        // Iterate through the users array
+        for (uint i = 0; i < users.length; i++) {
+            // Check if the account number matches and if the balance is sufficient
+            if (users[i].AccountNo == int(AccountNo) && users[i].balance >= amount) {
+                users[i].balance -= amount; // Deduct the amount from the user's balance
+                break; // Exit the loop once the user is found
+            }
+        }
+    }
+
+    // Function to get the balance of a user's account
+    function getBalance(uint AccountNo) public view returns (uint) {
+        // Iterate through the users array
+        for (uint i = 0; i < users.length; i++) {
+            // Check if the account number matches
+            if (users[i].AccountNo == int(AccountNo)) {
+                return users[i].balance; // Return the user's balance
+            }
+        }
+        // Return 0 if the user does not exist
+        return 0;
+    }
+}
